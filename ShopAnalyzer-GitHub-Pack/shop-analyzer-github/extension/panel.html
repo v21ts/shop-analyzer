@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <style>
+    :root {
+      --bg: #f8fafc; --surface: #fff; --text: #0f172a; --muted: #64748b;
+      --border: #e2e8f0; --blue: #2563eb; --blue-soft: #eff6ff;
+      --green: #059669; --green-soft: #ecfdf5; --amber: #d97706; --amber-soft: #fffbeb;
+      --red: #dc2626; --red-soft: #fef2f2; --radius: 12px;
+      --shadow: 0 1px 3px rgba(15,23,42,.06), 0 4px 14px rgba(15,23,42,.04);
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      width: 100%; min-width: 320px; max-width: 440px; margin: 0 auto;
+      min-height: 100vh; overflow-y: auto; background: var(--bg); color: var(--text);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
+      font-size: 13px; line-height: 1.45; -webkit-font-smoothing: antialiased;
+    }
+    .header {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 12px 14px; background: var(--surface); border-bottom: 1px solid var(--border);
+      position: sticky; top: 0; z-index: 20;
+    }
+    .header h1 { font-size: 15px; font-weight: 650; letter-spacing: -0.02em; }
+    .header .ver { font-size: 10px; color: var(--muted); font-weight: 500; margin-left: 5px; }
+    .body { padding: 12px 12px 24px; }
+    .card {
+      background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius);
+      padding: 14px; margin-bottom: 10px; box-shadow: var(--shadow);
+    }
+    .card-title {
+      font-size: 10px; font-weight: 650; text-transform: uppercase; letter-spacing: .05em;
+      color: var(--muted); margin-bottom: 8px; display: flex; align-items: center; gap: 6px;
+    }
+    .row { display: flex; gap: 6px; align-items: center; }
+    input[type="password"], input[type="text"], input[type="url"], select, input[type="range"] {
+      flex: 1; padding: 8px 10px; font-size: 12.5px; border: 1px solid var(--border);
+      border-radius: 8px; outline: none; background: #fff;
+    }
+    input:focus, select:focus { border-color: var(--blue); box-shadow: 0 0 0 3px rgba(37,99,235,.12); }
+    button {
+      padding: 8px 12px; border: none; border-radius: 8px; background: #0f172a; color: #fff;
+      font-size: 12.5px; font-weight: 560; cursor: pointer; white-space: nowrap;
+    }
+    button:hover { opacity: .92; }
+    button:disabled { opacity: .4; cursor: not-allowed; }
+    button.secondary { background: #fff; color: var(--text); border: 1px solid var(--border); }
+    button.ghost { background: transparent; color: var(--muted); border: none; padding: 4px 8px; }
+    button.small { padding: 5px 9px; font-size: 11.5px; border-radius: 6px; }
+    button.full { width: 100%; }
+    button.primary { background: var(--blue); }
+    button.green { background: var(--green); }
+    .status { font-size: 12px; color: var(--muted); margin-top: 6px; min-height: 16px; display: flex; align-items: center; gap: 6px; }
+    .status.error { color: var(--red); }
+    .status.ok { color: var(--green); }
+    .spinner { width: 12px; height: 12px; border: 2px solid var(--border); border-top-color: var(--blue); border-radius: 50%; animation: spin .6s linear infinite; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    .hidden { display: none !important; }
+    .hint { font-size: 11.5px; color: var(--muted); margin-bottom: 8px; }
+    .badge { display: inline-flex; font-size: 10px; padding: 2px 7px; border-radius: 999px; font-weight: 600; background: var(--blue-soft); color: var(--blue); }
+    .badge.green { background: var(--green-soft); color: var(--green); }
+    .badge.amber { background: var(--amber-soft); color: var(--amber); }
+    .badge.red { background: var(--red-soft); color: var(--red); }
+    a.link { color: var(--muted); cursor: pointer; text-decoration: underline; font-size: 12px; }
+    .key-ok { color: var(--green); font-size: 12px; }
+
+    /* Truth Moment */
+    .truth {
+      text-align: center; padding: 18px 14px; border-radius: var(--radius);
+      border: 1px solid var(--border); background: linear-gradient(180deg, #fff 0%, #f8fafc 100%);
+      margin-bottom: 10px; box-shadow: var(--shadow);
+    }
+    .truth.bad { border-color: #fecaca; background: linear-gradient(180deg, #fff 0%, #fef2f2 100%); }
+    .truth.ok { border-color: #a7f3d0; background: linear-gradient(180deg, #fff 0%, #ecfdf5 100%); }
+    .truth.warn { border-color: #fde68a; background: linear-gradient(180deg, #fff 0%, #fffbeb 100%); }
+    .truth .big {
+      font-size: 36px; font-weight: 750; letter-spacing: -0.04em; line-height: 1.1;
+      font-variant-numeric: tabular-nums;
+    }
+    .truth .big.neg { color: var(--red); }
+    .truth .big.pos { color: var(--green); }
+    .truth .headline { font-size: 14px; font-weight: 600; margin-top: 6px; color: var(--text); }
+    .truth .sub { font-size: 12px; color: var(--muted); margin-top: 4px; max-width: 320px; margin-left: auto; margin-right: auto; }
+    .truth .meta { font-size: 11px; color: var(--muted); margin-top: 10px; }
+
+    /* Moves */
+    .move {
+      border: 1px solid var(--border); border-radius: 10px; padding: 12px; margin-bottom: 8px;
+      background: #fff; transition: opacity .15s;
+    }
+    .move.dim { opacity: .45; }
+    .move .top { display: flex; justify-content: space-between; align-items: flex-start; gap: 8px; }
+    .move .name { font-weight: 600; font-size: 13px; }
+    .move .action {
+      margin-top: 8px; padding: 8px 10px; border-radius: 8px; background: var(--blue-soft);
+      border: 1px solid #dbeafe; font-size: 12.5px;
+    }
+    .move .action.down { background: var(--green-soft); border-color: #a7f3d0; }
+    .move .action.up { background: var(--amber-soft); border-color: #fde68a; }
+    .move .action strong { font-size: 14px; }
+    .move .why { font-size: 11.5px; color: var(--muted); margin-top: 4px; }
+    .move .prices { font-size: 11.5px; color: var(--muted); margin-top: 6px; font-variant-numeric: tabular-nums; }
+    .move .star { cursor: pointer; font-size: 16px; line-height: 1; opacity: .35; border: none; background: none; padding: 0 2px; }
+    .move .star.on { opacity: 1; }
+
+    .sim-row { display: flex; align-items: center; gap: 8px; margin: 8px 0; font-size: 12px; }
+    .sim-row input[type="range"] { flex: 1; padding: 0; }
+    .sim-val { min-width: 42px; font-weight: 600; font-variant-numeric: tabular-nums; }
+
+    .toolbar { display: flex; gap: 5px; flex-wrap: wrap; margin-bottom: 8px; }
+    details.advanced { margin-top: 6px; }
+    details.advanced summary { cursor: pointer; font-size: 11.5px; color: var(--muted); }
+    .rec-card {
+      border: 1px solid var(--border); border-radius: 10px; padding: 11px; margin-bottom: 7px; background: #fff;
+    }
+    .rec-card h4 { font-size: 13px; font-weight: 650; margin-bottom: 3px; }
+    .rec-card p { font-size: 12.5px; color: #334155; }
+    .confidence { font-size: 10px; padding: 2px 7px; border-radius: 999px; margin-left: 5px; font-weight: 650; text-transform: uppercase; }
+    .confidence-high { background: var(--green-soft); color: var(--green); }
+    .confidence-medium { background: var(--amber-soft); color: var(--amber); }
+    .confidence-low { background: var(--red-soft); color: var(--red); }
+    .empty { text-align: center; padding: 16px; color: var(--muted); font-size: 12.5px; }
+    .pickable {
+      text-align: left; width: 100%; padding: 8px 10px; border: 1px solid var(--border);
+      border-radius: 8px; background: #f8fafc; color: var(--text); font-size: 12px; cursor: pointer;
+    }
+    .pickable:hover { border-color: var(--blue); }
+    .pickable.selected { border-color: var(--blue); background: var(--blue-soft); }
+    .pickable .pr { float: right; font-weight: 600; font-variant-numeric: tabular-nums; }
+    .chip {
+      border: 1px solid var(--border); background: #fff; border-radius: 999px;
+      padding: 4px 10px; font-size: 11.5px; cursor: pointer; color: var(--text);
+    }
+    .chip.on { background: var(--blue-soft); border-color: #93c5fd; color: var(--blue); font-weight: 600; }
+    .chip .n { opacity: .65; margin-left: 3px; font-size: 10px; }
+    .floored { color: var(--amber); font-size: 10.5px; font-weight: 600; }
+    .alert-row {
+      background: var(--amber-soft); border: 1px solid #fde68a; border-radius: 8px;
+      padding: 8px 10px; margin-bottom: 5px; font-size: 12px;
+    }
+    .alert-row.down { background: var(--green-soft); border-color: #a7f3d0; }
+    .alert-row.up { background: var(--red-soft); border-color: #fecaca; }
+    .kpis { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; margin-bottom: 8px; }
+    .kpi { text-align: center; background: #f8fafc; border: 1px solid var(--border); border-radius: 8px; padding: 8px 4px; }
+    .kpi strong { display: block; font-size: 14px; font-weight: 650; }
+    .kpi span { font-size: 9.5px; color: var(--muted); text-transform: uppercase; letter-spacing: .03em; }
+    .list-item {
+      display: flex; justify-content: space-between; align-items: flex-start; gap: 8px;
+      padding: 8px 10px; background: #f8fafc; border: 1px solid var(--border); border-radius: 8px; margin-bottom: 5px; font-size: 12px;
+    }
+    .list-item .meta { color: var(--muted); font-size: 11px; margin-top: 1px; }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <h1>Shop Analyzer <span class="ver">v1.9</span></h1>
+    <div class="row" style="gap:6px">
+      <span id="plan-badge" class="badge">Free</span>
+      <button id="clear-data" class="ghost small" title="Clear data">Clear</button>
+    </div>
+  </div>
+
+  <div class="body">
+    <!-- Plan / upgrade -->
+    <div class="card" id="plan-card">
+      <div class="card-title">Plan</div>
+      <div id="plan-summary" class="hint" style="margin-bottom:8px"></div>
+      <div id="plan-free-box">
+        <p class="hint">Free: 1 competitor · 15 moves · 3 watches · manual checks · 3 AI runs/day</p>
+        <button id="show-upgrade" class="full primary" style="margin-bottom:6px">Upgrade to Pro</button>
+      </div>
+      <div id="plan-upgrade-box" class="hidden">
+        <p class="hint"><strong>Pro</strong> — $14/mo · $99/yr · or lifetime $159<br/>
+        Unlimited competitors &amp; matches · 50 watches · scheduled alerts · unlimited AI (BYOK)</p>
+        <p class="hint">After purchase, paste your license key:</p>
+        <div class="row">
+          <input type="text" id="license-key" placeholder="SA-PRO-…" autocomplete="off" />
+          <button id="activate-license" class="small green">Activate</button>
+        </div>
+        <div id="license-status" class="status"></div>
+        <button id="hide-upgrade" class="ghost small" style="margin-top:4px">Not now</button>
+      </div>
+      <div id="plan-pro-box" class="hidden">
+        <p class="hint" style="color:var(--green)">Pro active — full limits unlocked.</p>
+        <button id="deactivate-license" class="ghost small">Remove license</button>
+      </div>
+    </div>
+
+    <!-- Analyze -->
+    <div class="card">
+      <button id="analyze-btn" class="full primary">Analyze this shop</button>
+      <div id="status" class="status"></div>
+      <div id="history-note" class="status hidden"></div>
+    </div>
+
+    <!-- TRUTH MOMENT -->
+    <div id="truth-card" class="truth hidden">
+      <div id="truth-big" class="big">—</div>
+      <div id="truth-headline" class="headline"></div>
+      <div id="truth-sub" class="sub"></div>
+      <div id="truth-meta" class="meta"></div>
+    </div>
+
+    <div id="kpis" class="kpis hidden"></div>
+
+    <!-- Catalog filter -->
+    <div id="filter-card" class="card hidden">
+      <div class="card-title">Focus catalog</div>
+      <p class="hint">Hide noise (merch, posters…) so matching stays on the products you care about.</p>
+      <div id="filter-chips" style="display:flex;flex-wrap:wrap;gap:5px;margin-bottom:6px"></div>
+      <div class="row" style="margin-top:4px">
+        <button id="filter-all" class="secondary small">All</button>
+        <button id="filter-none" class="secondary small">None</button>
+        <span id="filter-count" style="font-size:11px;color:var(--muted);margin-left:4px"></span>
+      </div>
+    </div>
+
+    <!-- Competitors -->
+    <div id="competitor-section" class="card hidden">
+      <div class="card-title">Competitors</div>
+      <p class="hint">Add 1–3 competitor store URLs. We scrape in a background tab.</p>
+      <div class="row">
+        <input type="url" id="comp-url" placeholder="https://competitor.com" />
+        <button id="add-comp-btn" class="small">Add</button>
+      </div>
+      <div id="comp-status" class="status"></div>
+      <div id="comp-list" style="margin-top:6px"></div>
+    </div>
+
+    <!-- Strategy + What-if -->
+    <div id="strategy-card" class="card hidden">
+      <div class="card-title">Your pricing move</div>
+      <div class="sim-row">
+        <span style="color:var(--muted);min-width:70px">Strategy</span>
+        <select id="strategy">
+          <option value="median">Match median</option>
+          <option value="undercut5" selected>Undercut 5%</option>
+          <option value="undercut10">Undercut 10%</option>
+          <option value="premium5">Premium +5%</option>
+          <option value="premium10">Premium +10%</option>
+          <option value="custom">Custom %</option>
+        </select>
+      </div>
+      <div id="custom-sim" class="sim-row hidden">
+        <span style="color:var(--muted);min-width:70px">vs median</span>
+        <input type="range" id="custom-pct" min="-25" max="25" value="-5" step="1" />
+        <span class="sim-val" id="custom-pct-label">−5%</span>
+      </div>
+      <div class="sim-row" style="margin-top:6px">
+        <span style="color:var(--muted);min-width:70px" title="Estimated cost as % of your current price">Cost %</span>
+        <input type="number" id="cost-pct" min="0" max="95" step="1" placeholder="e.g. 40" style="flex:1" />
+        <span style="color:var(--muted);font-size:11px">of price</span>
+      </div>
+      <div class="sim-row">
+        <span style="color:var(--muted);min-width:70px" title="Never suggest a price below this margin on cost">Min margin</span>
+        <input type="number" id="min-margin" min="0" max="90" step="1" value="30" style="flex:1" />
+        <span style="color:var(--muted);font-size:11px">%</span>
+      </div>
+      <p class="hint" style="margin-bottom:0">Margin floor blocks suggestions that would go below cost ÷ (1 − margin). Leave cost empty to skip.</p>
+    </div>
+
+    <!-- Manual pairing when auto-match fails -->
+    <div id="manual-card" class="card hidden">
+      <div class="card-title">Pair products manually</div>
+      <p class="hint" id="manual-hint">Names didn’t match automatically. Click one product from your shop, then one from the competitor.</p>
+      <div style="font-size:11px;color:var(--muted);margin-bottom:4px">Your shop</div>
+      <div id="manual-own" style="display:flex;flex-direction:column;gap:4px;margin-bottom:8px;max-height:140px;overflow:auto"></div>
+      <div style="font-size:11px;color:var(--muted);margin-bottom:4px">Competitor</div>
+      <div id="manual-comp" style="display:flex;flex-direction:column;gap:4px;max-height:160px;overflow:auto"></div>
+      <div id="manual-status" class="status"></div>
+    </div>
+
+    <!-- One move per product -->
+    <div id="moves-card" class="card hidden">
+      <div class="card-title">
+        Recommended moves
+        <span id="moves-count" class="badge">0</span>
+      </div>
+      <div class="toolbar">
+        <button id="select-all-matches" class="secondary small">All</button>
+        <button id="select-none-matches" class="secondary small">None</button>
+        <button id="export-fix" class="green small">Copy the fix (CSV)</button>
+      </div>
+      <div id="moves-list"></div>
+    </div>
+
+    <!-- Watchlist -->
+    <div id="watch-card" class="card hidden">
+      <div class="card-title">Watchlist <span id="watch-count" class="badge">0</span></div>
+      <p class="hint">Star ★ moves to watch competitor prices. Background checks can notify you on changes.</p>
+      <div class="row" style="margin-bottom:8px;flex-wrap:wrap">
+        <button id="watch-check-now" class="primary small">Check now</button>
+        <select id="watch-interval" style="flex:0 0 auto;min-width:120px">
+          <option value="60">Every 1 hour</option>
+          <option value="180">Every 3 hours</option>
+          <option value="360" selected>Every 6 hours</option>
+          <option value="1440">Once a day</option>
+        </select>
+      </div>
+      <div id="watch-status" class="status"></div>
+      <div id="watch-alerts" style="margin-bottom:8px"></div>
+      <div id="watch-list"></div>
+      <div id="watch-empty" class="empty">Star ★ items in Recommended moves to build your watchlist.</div>
+    </div>
+
+    <!-- AI (advanced) -->
+    <div id="ai-section" class="card hidden">
+      <div class="card-title">AI deeper dive</div>
+      <p class="hint">Optional. Truth Moment + moves above work without AI.</p>
+      <div class="row" style="margin-bottom:6px">
+        <select id="provider-select" style="flex:0 0 auto;min-width:110px">
+          <option value="grok" selected>Grok</option>
+          <option value="claude">Claude</option>
+          <option value="openai">OpenAI</option>
+          <option value="gemini">Gemini</option>
+          <option value="deepseek">DeepSeek</option>
+        </select>
+        <select id="model-select" style="flex:1"></select>
+      </div>
+      <button id="recommend-btn" class="full primary">Generate AI recommendations</button>
+      <div id="rec-status" class="status"></div>
+      <div id="recommendations" style="margin-top:8px"></div>
+
+      <details class="advanced">
+        <summary>API keys</summary>
+        <div id="keys-grid" style="display:flex;flex-direction:column;gap:8px;margin-top:8px">
+          <div>
+            <div style="font-size:11px;color:var(--muted);margin-bottom:3px">Claude</div>
+            <div id="claude-key-setup" class="row">
+              <input type="password" id="claude-key" placeholder="sk-ant-…" autocomplete="off" />
+              <button id="save-claude-key" class="small">Save</button>
+            </div>
+            <div id="claude-key-saved" class="hidden key-ok">Saved · <a class="link" id="change-claude-key">change</a></div>
+          </div>
+          <div>
+            <div style="font-size:11px;color:var(--muted);margin-bottom:3px">Grok (xAI)</div>
+            <div id="xai-key-setup" class="row">
+              <input type="password" id="xai-key" placeholder="xai-…" autocomplete="off" />
+              <button id="save-xai-key" class="small">Save</button>
+            </div>
+            <div id="xai-key-saved" class="hidden key-ok">Saved · <a class="link" id="change-xai-key">change</a></div>
+          </div>
+          <div>
+            <div style="font-size:11px;color:var(--muted);margin-bottom:3px">OpenAI</div>
+            <div id="openai-key-setup" class="row">
+              <input type="password" id="openai-key" placeholder="sk-…" autocomplete="off" />
+              <button id="save-openai-key" class="small">Save</button>
+            </div>
+            <div id="openai-key-saved" class="hidden key-ok">Saved · <a class="link" id="change-openai-key">change</a></div>
+          </div>
+          <div>
+            <div style="font-size:11px;color:var(--muted);margin-bottom:3px">Gemini</div>
+            <div id="gemini-key-setup" class="row">
+              <input type="password" id="gemini-key" placeholder="AIza…" autocomplete="off" />
+              <button id="save-gemini-key" class="small">Save</button>
+            </div>
+            <div id="gemini-key-saved" class="hidden key-ok">Saved · <a class="link" id="change-gemini-key">change</a></div>
+          </div>
+          <div>
+            <div style="font-size:11px;color:var(--muted);margin-bottom:3px">DeepSeek</div>
+            <div id="deepseek-key-setup" class="row">
+              <input type="password" id="deepseek-key" placeholder="sk-…" autocomplete="off" />
+              <button id="save-deepseek-key" class="small">Save</button>
+            </div>
+            <div id="deepseek-key-saved" class="hidden key-ok">Saved · <a class="link" id="change-deepseek-key">change</a></div>
+          </div>
+        </div>
+      </details>
+    </div>
+  </div>
+  <script src="popup.js"></script>
+</body>
+</html>
