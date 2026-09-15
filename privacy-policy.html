@@ -5,56 +5,72 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Shop Analyzer — Privacy Policy</title>
   <style>
-    body { font-family: system-ui, sans-serif; max-width: 720px; margin: 40px auto; padding: 0 20px; line-height: 1.55; color: #0f172a; }
-    h1 { font-size: 1.6rem; } h2 { font-size: 1.15rem; margin-top: 1.6em; }
+    body { font-family: system-ui, -apple-system, sans-serif; max-width: 720px; margin: 40px auto; padding: 0 20px; line-height: 1.55; color: #0f172a; }
+    h1 { font-size: 1.6rem; margin-bottom: 0.25rem; }
+    h2 { font-size: 1.1rem; margin-top: 1.75em; }
     .muted { color: #64748b; font-size: 0.95rem; }
+    ul { padding-left: 1.25em; }
+    a { color: #2563eb; }
   </style>
 </head>
 <body>
   <h1>Shop Analyzer — Privacy Policy</h1>
-  <p class="muted">Last updated: September 14, 2026</p>
+  <p class="muted">Last updated: September 15, 2026</p>
 
-  <p>Shop Analyzer (“the Extension”) is a Chrome extension that helps store owners analyze product prices and compare them with competitor storefronts. This policy explains what data is processed and how.</p>
+  <p>Shop Analyzer (“the Extension”) is a Chrome extension that helps online store owners analyze product prices and compare them with competitor storefronts. This policy explains what data is processed, why, and who is involved.</p>
 
-  <h2>1. Data we process</h2>
-  <p>The Extension processes data <strong>on your device</strong> in order to provide its features:</p>
+  <h2>1. Data processed on your device</h2>
+  <p>Core features run <strong>locally in your browser</strong>. The Extension may process:</p>
   <ul>
-    <li><strong>Storefront data you choose to analyze</strong> — product titles, prices, and related catalog fields from your shop and competitor URLs you enter. This is fetched from public pages or public store APIs (for example Shopify <code>products.json</code> or WooCommerce Store API) and from the active browser tab when you click Analyze.</li>
-    <li><strong>Settings and results</strong> — saved analyses, confirmed matches, watchlist items, pricing strategy preferences, optional cost/margin settings, and license keys, stored using Chrome’s extension storage (<code>chrome.storage.local</code>) on your computer.</li>
-    <li><strong>Optional AI API keys</strong> — if you use AI recommendations, you may save your own third-party API keys (for example Anthropic, xAI, OpenAI, Google, or DeepSeek). Keys remain in local extension storage and are sent only to the provider you select when you request recommendations.</li>
+    <li><strong>Storefront data you choose</strong> — product titles, prices, categories, and related catalog fields from your shop and from competitor URLs you enter or open. Data is fetched from public pages or public store APIs (for example Shopify product JSON or WooCommerce Store API) and from the active tab when you click Analyze.</li>
+    <li><strong>Settings and results</strong> — saved analyses, product matches, watchlists, pricing strategy preferences, optional cost/margin settings, and plan status, stored with Chrome’s extension storage (<code>chrome.storage</code>) on your computer.</li>
+    <li><strong>Optional AI API keys</strong> — if you use AI recommendations, you may save your own third-party API keys (for example Anthropic, xAI, OpenAI, Google Gemini, or DeepSeek). Keys stay in local extension storage and are sent only to the provider you select when you request recommendations.</li>
   </ul>
 
-  <h2>2. What we do not do</h2>
+  <h2>2. Payments (ExtensionPay and Stripe)</h2>
+  <p>If you purchase <strong>Pro</strong>, payment is handled by <strong>ExtensionPay</strong> and <strong>Stripe</strong>:</p>
   <ul>
-    <li>We do not require an account to use the Free tier.</li>
-    <li>We do not operate a mandatory backend that receives your product catalogs for the core analyze/match/watch features.</li>
+    <li>We do <strong>not</strong> collect or store your card number in the Extension.</li>
+    <li>ExtensionPay manages paid status for the Extension and may process your email address so you can pay, log in on another browser, or manage a subscription.</li>
+    <li>Stripe processes payment details under Stripe’s privacy policy.</li>
+    <li>The Extension may contact ExtensionPay’s servers only to check or update whether your install is paid, and to open checkout, login, or subscription-management pages.</li>
+  </ul>
+  <p>See also: <a href="https://extensionpay.com" target="_blank" rel="noopener">ExtensionPay</a> and <a href="https://stripe.com/privacy" target="_blank" rel="noopener">Stripe Privacy Policy</a>.</p>
+
+  <h2>3. What we do not do</h2>
+  <ul>
+    <li>No account is required for the Free tier.</li>
     <li>We do not sell your personal data.</li>
+    <li>We do not run a mandatory backend that receives your full product catalogs for core analyze/match/watch features.</li>
     <li>We do not inject advertising trackers into websites you visit.</li>
   </ul>
 
-  <h2>3. Permissions</h2>
+  <h2>4. Permissions</h2>
   <ul>
-    <li><strong>activeTab / scripting / tabs</strong> — to read product information from the shop page you analyze and to open competitor pages briefly for scraping when you add a competitor or run a watch check.</li>
-    <li><strong>storage</strong> — to save your analysis results, settings, watchlist, and optional license/API keys on your device.</li>
-    <li><strong>alarms</strong> — to schedule optional competitor price checks (Pro).</li>
-    <li><strong>notifications</strong> — to notify you when a watched competitor price changes (Pro / when enabled).</li>
-    <li><strong>sidePanel</strong> — to show the analyzer UI in Chrome’s side panel.</li>
-    <li><strong>Host access</strong> — to fetch catalog data from storefronts you choose and, if you use AI, to call the API endpoints of the AI provider you selected.</li>
+    <li><strong>activeTab, scripting, tabs</strong> — read product information from shop pages you analyze and open competitor pages briefly when you add a competitor or run a watch check.</li>
+    <li><strong>storage</strong> — save analysis results, settings, watchlist, optional API keys, and plan-related flags on your device.</li>
+    <li><strong>alarms</strong> — schedule optional competitor price checks (Pro).</li>
+    <li><strong>notifications</strong> — notify you when a watched competitor price changes.</li>
+    <li><strong>sidePanel</strong> — show the analyzer UI in Chrome’s side panel.</li>
+    <li><strong>Host access</strong> — fetch catalog data from storefronts you choose; call optional AI APIs you select; communicate with ExtensionPay for payments and paid status.</li>
   </ul>
 
-  <h2>4. Third-party services</h2>
-  <p>If you enable AI recommendations, catalog summaries you generate are sent to the AI provider you choose under that provider’s terms and privacy policy. Payment and license delivery (if you purchase Pro) may be handled by a third-party payment processor; that processor’s policy applies to billing data.</p>
+  <h2>5. Third-party services</h2>
+  <ul>
+    <li><strong>Optional AI providers</strong> — if you generate recommendations, a summary of catalog/match data is sent only to the provider and model you choose, under that provider’s terms and privacy policy.</li>
+    <li><strong>ExtensionPay / Stripe</strong> — payment and paid-status as described above.</li>
+  </ul>
 
-  <h2>5. Data retention</h2>
-  <p>Data stored via <code>chrome.storage.local</code> remains until you clear it in the Extension, remove the Extension, or clear site/extension data in Chrome.</p>
+  <h2>6. Data retention</h2>
+  <p>Data in <code>chrome.storage</code> remains until you clear it in the Extension, remove the Extension, or clear extension data in Chrome. Payment records retained by ExtensionPay or Stripe follow their own retention policies.</p>
 
-  <h2>6. Children’s privacy</h2>
+  <h2>7. Children</h2>
   <p>The Extension is intended for business and store operators, not for children under 13.</p>
 
-  <h2>7. Changes</h2>
+  <h2>8. Changes</h2>
   <p>We may update this policy when features change. The “Last updated” date at the top will be revised accordingly.</p>
 
-  <h2>8. Contact</h2>
-  <p>For privacy questions, contact the publisher email listed on the Chrome Web Store listing for Shop Analyzer.</p>
+  <h2>9. Contact</h2>
+  <p>For privacy questions, use the support email listed on the Chrome Web Store listing for Shop Analyzer, or open an issue on the project’s GitHub repository.</p>
 </body>
 </html>
